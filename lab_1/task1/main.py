@@ -35,7 +35,7 @@ def encode_text(text: str, key: str) -> str:
             int_txt = ord(t_list[i]) - ord('а') # достаём индекс буквы в алфавите
             int_key = ord(key[cur]) - ord('А')
 
-            t_list[i] = chr(ord('а') + (int_txt + int_key + 1) % 32) # складываем индексы
+            t_list[i] = chr(ord('а') + (int_txt + int_key + 1) % 32)
 
             cur = (cur + 1) % key_len
 
@@ -66,7 +66,7 @@ def decode_text(text: str, key: str) -> str:
             int_txt = ord(t_list[i]) - ord('а')  # достаём индекс буквы в алфавите
             int_key = ord(key[cur]) - ord('А')
 
-            t_list[i] = chr(ord('а') + (int_txt - int_key - 1) % 32)  # складываем индексы
+            t_list[i] = chr(ord('а') + (int_txt - int_key - 1) % 32)
 
             cur = (cur + 1) % key_len
 
