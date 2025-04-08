@@ -4,6 +4,28 @@ from PyQt6.QtWidgets import QApplication, QTextEdit, QMainWindow, QPushButton, Q
 from constants import *
 
 
+def load_from_txt(path: str)  -> str:
+    """загрузка текста из файла"""
+    with open(path, 'r', encoding="utf-8") as file:
+        text = file.read()
+
+    return text
+
+
+def load_to_txt(text: str, path: str) -> None:
+    """загрузка текста в файл"""
+    with open(path, 'w', encoding='utf-8') as file:
+        file.write(text)
+
+
+def encode_text(text: str, key: str) -> str:
+    return ''
+
+
+def decode_text(text: str, key: str) -> str:
+    return ''
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -18,12 +40,14 @@ class MainWindow(QMainWindow):
 
         # окна с текстом
         self.enc_txt = QTextEdit()
+        self.enc_txt.setText(load_from_txt(TEXT_PATH))
 
         self.result = QTextEdit()
         self.result.setReadOnly(True)
 
         self.key_edit = QTextEdit()
-        self.key_edit.setFixedHeight(35) #
+        self.key_edit.setText(load_from_txt(KEY_PATH))
+        self.key_edit.setFixedHeight(35)
 
         # кнопки
         self.encode_button = QPushButton("Кодировать")
@@ -46,11 +70,23 @@ class MainWindow(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
+
     def encode(self) -> None:
-        print()
+        key = self.key_edit.toPlainText().upper()  # достаём из поля текст и делаем его заглавными буквами
+        text = self.enc_txt.toPlainText()
+
+        encoded_text = encode_text(text, key)
+        self.result.setText(encoded_text)
+
+        load_to_txt(encoded_text, ENCODED_TEXT_PATH)
+
 
     def decode(self) -> None:
-        print()
+        key = self.key_edit.toPlainText().upper()  # достаём из поля текст и делаем его заглавными буквами
+        text = self.enc_txt.toPlainText()
+
+        decoded_text = decode_text(text, key)
+        self.result.setText(decoded_text)
 
 
 def main():
