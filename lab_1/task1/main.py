@@ -19,6 +19,13 @@ def load_to_txt(text: str, path: str) -> None:
 
 
 def encode_text(text: str, key: str) -> str:
+    """
+    Проходимся по тексту.
+    Встречая русский строчный/заглавный символ, складываем его номер в алфавите с соответствующим
+    номером символа алфавита ключа.
+
+    Достигая конца ключа, начинаем по нему проход сначала.
+    """
     key_len = len(key)
     t_list = list(text)
     cur = 0
@@ -43,6 +50,13 @@ def encode_text(text: str, key: str) -> str:
 
 
 def decode_text(text: str, key: str) -> str:
+    """
+    Проходимся по тексту.
+    Встречая русский строчный/заглавный символ, вычитаем из его номера в алфавите соответствующий
+    номер символа алфавита ключа.
+
+    Достигая конца ключа, начинаем по нему проход сначала.
+    """
     key_len = len(key)
     t_list = list(text)
     cur = 0
@@ -64,6 +78,16 @@ def decode_text(text: str, key: str) -> str:
             cur = (cur + 1) % key_len
 
     return ''.join(t_list)
+
+
+def correct_key(key: str) -> str:
+    '''возвращает строку только с русскими буквами'''
+    cor_key = []
+    for x in key:
+        if (x >= 'А') and (x <= 'Я'):
+            cor_key.append(x)
+
+    return ''.join(cor_key)
 
 
 class MainWindow(QMainWindow):
@@ -112,8 +136,17 @@ class MainWindow(QMainWindow):
 
 
     def encode(self) -> None:
+        """
+        Проверяем ключ на корректность, если всё хорошо - вызываем функцию кодирования, иначе говорим о неправильном ключе.
+        Если кодировка произошла результат выводим пользователю и загружаем в файл указанный в ENCODED_TEXT_PATH.
+        """
         key = self.key_edit.toPlainText().upper()  # достаём из поля текст и делаем его заглавными буквами
         text = self.enc_txt.toPlainText()
+
+        key = correct_key(key)
+        if len(key) == 0:
+            self.result.setText("некорректный ключ!")
+            return
 
         encoded_text = encode_text(text, key)
         self.result.setText(encoded_text)
@@ -122,8 +155,17 @@ class MainWindow(QMainWindow):
 
 
     def decode(self) -> None:
+        """
+        Проверяем ключ на корректность, если всё хорошо - вызываем функцию кодирования, иначе говорим о неправильном ключе.
+        Если кодировка произошла результат выводим пользователю.
+        """
         key = self.key_edit.toPlainText().upper()  # достаём из поля текст и делаем его заглавными буквами
         text = self.enc_txt.toPlainText()
+
+        key = correct_key(key)
+        if len(key) == 0:
+            self.result.setText("некорректный ключ!")
+            return
 
         decoded_text = decode_text(text, key)
         self.result.setText(decoded_text)
