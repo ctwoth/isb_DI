@@ -1,4 +1,4 @@
-TEXT_PATH = "C:\\OIB_lb1\\isb_DI\\lab_1\\task2\\encoded.txt"
+TEXT_PATH = "C:\\OIB_lb1\\isb_DI\\lab_1\\task2\\cod4.txt"
 
 global_stat=[
     [' ', 0.128675],
