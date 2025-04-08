@@ -29,6 +29,24 @@ def decode_text(text:str, alphabet: str, key: str) -> str:
     return ''.join(rez)
 
 
+def text_stat(text: str) -> list[list[str | float]]:
+    """
+    Находим все уникальные символы в тексте.
+    Проходясь по ним, считаем их частоту и добавляем в stat пары вида: [{символ}, {частота встречаемости}].
+    Сортируем массив по частоте в порядке убывания.
+    """
+    txt_len = len(text.replace('\n', ''))
+    alphabet = set(list(text.replace('\n', '')))
+    stat = []
+
+    for simv in alphabet:
+        stat.append([simv, text.count(simv)/txt_len])
+
+    stat.sort(key= lambda x: x[1])
+    stat.reverse()
+
+    return stat
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -82,8 +100,26 @@ class MainWindow(QMainWindow):
 
 
     def stat(self) -> None:
-        print()
+        """
+        Получаем статистику по данному тексту.
+        Достаём алфавит частоты встречаемости данного текста (строка из всех уникальных символов в тексте в порадке убывания встречаемости)
+        и глобальный алфавит частоты встречаемости
 
+        выводим оба алфавита, а после выводим построчно символы и их частоты их обоих алфавитов
+        """
+        stat = text_stat(self.enc_txt.toPlainText())
+
+        alphabet_txt = ''.join([x[0] for x in stat])
+        global_alphabet = ''.join([x[0] for x in global_stat])
+
+        txt = f'алфавит по встречаемости в тексте: {alphabet_txt}\nглобальный алфавит по встречаемость: {global_alphabet}'
+
+        txt += '\n\nстатистика текста:\t\tглобальная статистика:\n'
+        for i in range(len(stat)):
+            txt += f'\'{stat[i][0]}\' -- {str(stat[i][1])}\t\t'
+            txt += f'\'{global_stat[i][0]}\' -- {str(global_stat[i][1])}\n'
+
+        self.result.setText(txt)
 
     def decode(self) -> None:
         """
