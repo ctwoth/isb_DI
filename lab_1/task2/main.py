@@ -77,8 +77,8 @@ class MainWindow(QMainWindow):
         key = self.key.toPlainText()
         text = self.enc_txt.toPlainText()
 
-        decode_text = decode_text(text, alphabet, key)
-        self.result.setText(decode_text)
+        decoded_text = decode_text(text, alphabet, key)
+        self.result.setText(decoded_text)
 
 
 def main():
