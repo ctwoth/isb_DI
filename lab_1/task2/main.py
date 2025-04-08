@@ -13,7 +13,15 @@ def load_from_txt(path: str)  -> str:
 
 
 def decode_text(text:str, alphabet: str, key: str) -> str:
-    return ''
+    rez = list(text)
+
+    for i in range(len(rez)):
+        pos = alphabet.find(rez[i])
+
+        if pos != -1:
+            rez[i] = key[pos]
+
+    return ''.join(rez)
 
 
 class MainWindow(QMainWindow):
@@ -68,14 +76,18 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
 
 
-    def stat(self):
+    def stat(self) -> None:
         print()
 
 
-    def decode(self):
+    def decode(self) -> None:
         alphabet = self.alphabet.toPlainText()
         key = self.key.toPlainText()
         text = self.enc_txt.toPlainText()
+
+        if len(alphabet) != len(key):
+            self.result.setText('длины ключа и алфавита не совпадают!')
+            return
 
         decoded_text = decode_text(text, alphabet, key)
         self.result.setText(decoded_text)
