@@ -4,6 +4,18 @@ from PyQt6.QtWidgets import QApplication, QTextEdit, QMainWindow, QPushButton, Q
 from constants import *
 
 
+def load_from_txt(path: str)  -> str:
+    """загрузка текста из файла"""
+    with open(path, 'r', encoding="utf-8") as file:
+        text = file.read()
+
+    return text
+
+
+def decode_text(text:str, alphabet: str, key: str) -> str:
+    return ''
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -19,6 +31,7 @@ class MainWindow(QMainWindow):
 
         # окна с текстом
         self.enc_txt = QTextEdit()
+        self.enc_txt.setText(load_from_txt(TEXT_PATH))
 
         self.alphabet = QTextEdit()
         self.alphabet.setFixedHeight(35)
@@ -60,7 +73,12 @@ class MainWindow(QMainWindow):
 
 
     def decode(self):
-        print()
+        alphabet = self.alphabet.toPlainText()
+        key = self.key.toPlainText()
+        text = self.enc_txt.toPlainText()
+
+        decode_text = decode_text(text, alphabet, key)
+        self.result.setText(decode_text)
 
 
 def main():
