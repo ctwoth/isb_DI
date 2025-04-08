@@ -13,6 +13,11 @@ def load_from_txt(path: str)  -> str:
 
 
 def decode_text(text:str, alphabet: str, key: str) -> str:
+    """
+    Проходимся по тексту.
+    Встречая очередной символ, ищем его позицию(pos) в alphabet,
+    Если находим - меняем его на символ стоящей на той же позиции в key.
+    """
     rez = list(text)
 
     for i in range(len(rez)):
@@ -81,6 +86,10 @@ class MainWindow(QMainWindow):
 
 
     def decode(self) -> None:
+        """
+        Проверяем, что длина алфавита (символы которые хотим поменять) совпадает с длиной ключа (на какие символы меняем).
+        Если совпали - вызываем функцию декодирования (замены) и выводим результат, иначе сообщаем о неверных длинах
+        """
         alphabet = self.alphabet.toPlainText()
         key = self.key.toPlainText()
         text = self.enc_txt.toPlainText()
