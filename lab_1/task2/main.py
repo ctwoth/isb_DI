@@ -51,7 +51,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Декодирование частотным анализем")
+        self.setWindowTitle("Декодирование частотным анализом")
         self.setFixedWidth(600)
 
         # Лейблы (просто надписи)

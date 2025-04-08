@@ -94,7 +94,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Кодирование шифром \"по книге\"")
+        self.setWindowTitle("Кодирование шифром \"Аббата Тритемиуса\"")
         self.setFixedWidth(600)
 
         # Лейблы (просто надписи)
