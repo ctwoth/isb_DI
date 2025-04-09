@@ -1,6 +1,6 @@
-TEXT_PATH = "C:\\OIB_lb1\\isb_DI\\lab_1\\task2\\cod4.txt"
+TEXT_PATH = "cod4.txt"
 
-global_stat=[
+GLOBAL_STAT=[
     [' ', 0.128675],
     ['О', 0.096456],
     ['И', 0.075312],
