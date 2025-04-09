@@ -5,7 +5,12 @@ from constants import *
 
 
 def load_from_txt(path: str)  -> str:
-    """загрузка текста из файла"""
+    """
+    загрузка текста из файла
+
+    :param path:
+    :return text_from_txt:
+    """
     with open(path, 'r', encoding="utf-8") as file:
         text = file.read()
 
@@ -17,6 +22,11 @@ def decode_text(text:str, alphabet: str, key: str) -> str:
     Проходимся по тексту.
     Встречая очередной символ, ищем его позицию(pos) в alphabet,
     Если находим - меняем его на символ стоящей на той же позиции в key.
+
+    :param text:
+    :param alphabet:
+    :param key:
+    :return decoded_text:
     """
     rez = list(text)
 
@@ -34,6 +44,9 @@ def text_stat(text: str) -> list[list[str | float]]:
     Находим все уникальные символы в тексте.
     Проходясь по ним, считаем их частоту и добавляем в stat пары вида: [{символ}, {частота встречаемости}].
     Сортируем массив по частоте в порядке убывания.
+
+    :param text:
+    :return text_stat:
     """
     txt_len = len(text.replace('\n', ''))
     alphabet = set(list(text.replace('\n', '')))
@@ -106,6 +119,9 @@ class MainWindow(QMainWindow):
         и глобальный алфавит частоты встречаемости
 
         выводим оба алфавита, а после выводим построчно символы и их частоты их обоих алфавитов
+
+        :param self:
+        :return None:
         """
         stat = text_stat(self.enc_txt.toPlainText())
 
@@ -125,6 +141,9 @@ class MainWindow(QMainWindow):
         """
         Проверяем, что длина алфавита (символы которые хотим поменять) совпадает с длиной ключа (на какие символы меняем).
         Если совпали - вызываем функцию декодирования (замены) и выводим результат, иначе сообщаем о неверных длинах
+
+        :param self:
+        :return None:
         """
         alphabet = self.alphabet.toPlainText()
         key = self.key.toPlainText()

@@ -5,7 +5,12 @@ from constants import *
 
 
 def load_from_txt(path: str)  -> str:
-    """загрузка текста из файла"""
+    """
+    загрузка текста из файла
+
+    :param path:
+    :return text_from_txt:
+    """
     with open(path, 'r', encoding="utf-8") as file:
         text = file.read()
 
@@ -13,7 +18,13 @@ def load_from_txt(path: str)  -> str:
 
 
 def load_to_txt(text: str, path: str) -> None:
-    """загрузка текста в файл"""
+    """
+    загрузка текста в файл
+
+    :param text:
+    :param path:
+    :return None:
+    """
     with open(path, 'w', encoding='utf-8') as file:
         file.write(text)
 
@@ -25,6 +36,10 @@ def encode_text(text: str, key: str) -> str:
     номером символа алфавита ключа.
 
     Достигая конца ключа, начинаем по нему проход сначала.
+
+    :param text:
+    :param key:
+    :return encoded_text:
     """
     key_len = len(key)
     t_list = list(text)
@@ -56,6 +71,10 @@ def decode_text(text: str, key: str) -> str:
     номер символа алфавита ключа.
 
     Достигая конца ключа, начинаем по нему проход сначала.
+
+    :param text:
+    :param key:
+    :return decoded_text:
     """
     key_len = len(key)
     t_list = list(text)
@@ -81,7 +100,12 @@ def decode_text(text: str, key: str) -> str:
 
 
 def correct_key(key: str) -> str:
-    '''возвращает строку только с русскими буквами'''
+    '''
+    возвращает строку только с русскими буквами
+
+    :param key:
+    :return only_russian_chars_key:
+    '''
     cor_key = []
     for x in key:
         if (x >= 'А') and (x <= 'Я'):
@@ -139,6 +163,9 @@ class MainWindow(QMainWindow):
         """
         Проверяем ключ на корректность, если всё хорошо - вызываем функцию кодирования, иначе говорим о неправильном ключе.
         Если кодировка произошла результат выводим пользователю и загружаем в файл указанный в ENCODED_TEXT_PATH.
+
+        :param self:
+        :return None:
         """
         key = self.key_edit.toPlainText().upper()  # достаём из поля текст и делаем его заглавными буквами
         text = self.enc_txt.toPlainText()
@@ -158,6 +185,9 @@ class MainWindow(QMainWindow):
         """
         Проверяем ключ на корректность, если всё хорошо - вызываем функцию кодирования, иначе говорим о неправильном ключе.
         Если кодировка произошла результат выводим пользователю.
+
+        :param self:
+        :return None:
         """
         key = self.key_edit.toPlainText().upper()  # достаём из поля текст и делаем его заглавными буквами
         text = self.enc_txt.toPlainText()
