@@ -110,14 +110,14 @@ class MainWindow(QMainWindow):
         stat = text_stat(self.enc_txt.toPlainText())
 
         alphabet_txt = ''.join([x[0] for x in stat])
-        global_alphabet = ''.join([x[0] for x in global_stat])
+        global_alphabet = ''.join([x[0] for x in GLOBAL_STAT])
 
         txt = f'алфавит по встречаемости в тексте: {alphabet_txt}\nглобальный алфавит по встречаемость: {global_alphabet}'
 
         txt += '\n\nстатистика текста:\t\tглобальная статистика:\n'
         for i in range(len(stat)):
             txt += f'\'{stat[i][0]}\' -- {str(stat[i][1])}\t\t'
-            txt += f'\'{global_stat[i][0]}\' -- {str(global_stat[i][1])}\n'
+            txt += f'\'{GLOBAL_STAT[i][0]}\' -- {str(GLOBAL_STAT[i][1])}\n'
 
         self.result.setText(txt)
 
