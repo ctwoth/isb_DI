@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "NIST.h"
-#include "consts.h"
+
 
 using namespace std;
 
