@@ -1,6 +1,9 @@
 #pragma once
+#include <boost\math\special_functions\gamma.hpp>
 #include<iostream>
 #include<cmath>
+#include "consts.h"
+
 
 using namespace std;
 
