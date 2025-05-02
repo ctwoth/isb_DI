@@ -25,8 +25,27 @@ double test1(string sequence) {
 }
 
 
-double test2(string sequence) {
-    return 0;
+double test2(string sequence) {    double zeta = 0;
+    size_t seq_len = sequence.size();
+
+    for (int i = 0; i < seq_len; ++i) {
+        if (sequence[i] == '1')
+            zeta++;
+    }
+    zeta /= seq_len;
+
+    if (fabs(zeta - 0.5) >= 2 / sqrt(seq_len))
+        return 0;
+
+    int Vn = 0;
+
+    for (int i = 0; i < seq_len - 1; ++i) {
+        if (sequence[i] != sequence[i+1])
+            Vn++;
+    }
+
+    return erfc(fabs(Vn - 2 * seq_len * zeta * (1 - zeta)) / 
+                (2 * sqrt(2 * seq_len) * zeta * (1 - zeta)));
 }
 
 
