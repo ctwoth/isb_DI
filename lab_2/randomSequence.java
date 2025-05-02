@@ -5,6 +5,8 @@ public class randomSequence {
         Random random = new Random();
         StringBuilder randSequence = new StringBuilder();
 
+        System.out.println("Sequence: ");
+
         for (int i = 0; i < 128; ++i) {
             randSequence.append(random.nextInt(2));
         }
