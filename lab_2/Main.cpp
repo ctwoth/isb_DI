@@ -5,6 +5,14 @@
 
 using namespace std;
 
+
+void print_test_result(ostream& stream, string test_name, double p_val) {
+    stream << "Test: " << test_name << '\n';
+    stream << "P-value: " << p_val << '\n';
+    stream << "Conclusion: " << ((p_val >= 0.01) ? "Passed" : "Failed");
+    stream << "\n\n";
+}
+
 void sequence_testing(string results_path, string sequence){
 	ofstream file;
 	file.open(results_path);
@@ -21,6 +29,7 @@ void sequence_testing(string results_path, string sequence){
 
 	file.close();
 }
+
 
 int main() {
 	sequence_testing(JAVA_RESULT_PATH, JAVA_SEQUENCE);
