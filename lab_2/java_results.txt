@@ -1,14 +1,17 @@
 testing sequence: 01001011100100000000001101101000011001000001111100010001100110111001011111111110101100110101110100111110011110101000011101011001
 
 Test: Frequency bitwise test.
-P-value: 0.723674
+P-value: 0.7236736098317631
 Conclusion: Passed
+
 
 Test: Identical consecutive bits test.
-P-value: 0.382288
+P-value: 0.382288109236177
 Conclusion: Passed
 
+
 Test: Longest sequence of units in a block test.
-P-value: 0.877383
+P-value: 0.2655637820909513
 Conclusion: Passed
+
 
