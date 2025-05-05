@@ -15,9 +15,9 @@ def write_test_result(file: TextIO, test_name: str, p_val: float) -> None:
     :param p_val:
     :return:
     """
-    file.write("Test: " + test_name + '\n')
-    file.write("P-value: " + str(p_val) + '\n')
-    file.write("Conclusion: " + ("Passed" if p_val >= 0.01 else "Failed") + '\n\n\n')
+    file.write(f'Test: {test_name}\n')
+    file.write(f'p-value: {p_val}\n')
+    file.write(f'Conclusion: {"Passed" if p_val >= 0.01 else "Failed"}\n\n\n')
 
 
 def sequence_testing(results_path: str, sequence: str) -> None:
@@ -41,9 +41,11 @@ def sequence_testing(results_path: str, sequence: str) -> None:
 
 
 def main() -> None:
-    sequence_testing(JAVA_RESULT_PATH, JAVA_SEQUENCE)
-    sequence_testing(CPP_RESULT_PATH, CPP_SEQUENCE)
-
+    try:
+        sequence_testing(JAVA_RESULT_PATH, JAVA_SEQUENCE)
+        sequence_testing(CPP_RESULT_PATH, CPP_SEQUENCE)
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == '__main__':
     main()
