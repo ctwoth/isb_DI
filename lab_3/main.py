@@ -5,7 +5,7 @@ import parcer
 import CryptoSystem
 
 
-def check_sets(sets) -> None:
+def check_sets(sets: dict) -> None:
     if not os.path.isfile(sets["initial_file"]):
         raise ValueError("Wrong path to initial file")
 
