@@ -31,21 +31,18 @@ def main() -> None:
         sets = file_utils.load_from_json(args.settings)
         check_sets(sets)
 
-        symmetric_key = file_utils.load_from_txt(sets["symmetric_key"])
-        public_key =    file_utils.load_from_txt(sets["public_key"])
-        private_key =   file_utils.load_from_txt(sets["private_key"])
-
         match args.task:
             case 'generation':
-                CryptoSystem.generate_key(args.key_bits, sets["symmetric_key"], sets["public_key"], sets["private_key"])
+                CryptoSystem.generate_keys(args.key_bits, sets["symmetric_key"],
+                                          sets["public_key"], sets["private_key"])
 
             case 'encryption':
-                text = file_utils.load_from_txt(sets["initial_file"])
-                CryptoSystem.encryption(text, symmetric_key, public_key, private_key, sets["encrypted_file"])
+                CryptoSystem.encryption(sets["initial_file"], sets["symmetric_key"],
+                                        sets["private_key"], sets["encrypted_file"])
 
             case 'decryption':
-                text = file_utils.load_from_txt(sets["encrypted_file"])
-                CryptoSystem.decryption(text, symmetric_key, public_key, private_key, sets["decrypted_file"])
+                CryptoSystem.decryption(sets["initial_file"], sets["symmetric_key"],
+                                        sets["private_key"], sets["decrypted_file"])
 
             case _:
                 raise ValueError("incorrect program task")
