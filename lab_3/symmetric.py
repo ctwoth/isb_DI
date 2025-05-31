@@ -1,14 +1,10 @@
-def generate_key() -> str:
+def generate_key(key_len: int) -> str:
     return 'key'
 
 
-def encrypt(text: str, key: str, save_path: str) -> None:
-    a = 1
+def encrypt(text: str, key: bytes) -> bytes:
+    return 'encrypted'.encode('utf-8')
 
 
-def decrypt(text: str, key: str, save_path: str) -> None:
-    a = 2
-
-
-def key_serialization(key: str, save_path: str) -> None:
-    a = 3
+def decrypt(text: str, key: bytes) -> bytes:
+    return 'decrypted'.encode('utf-8')
