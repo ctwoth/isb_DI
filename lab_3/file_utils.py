@@ -6,13 +6,13 @@ def load_in_json(path: str, data: dict) -> None:
         json.dump(data, fp)
 
 
-def load_from_json(path: str) -> str:
+def load_from_json(path: str) -> dict:
     with open(path, 'r') as json_file:
         json_data = json.load(json_file)
         return json_data
 
 
-def load_from_txt(path: str)-> None:
+def load_from_txt(path: str)-> str:
     with open(path, 'r') as file:
         data = file.read()
         return data
@@ -21,3 +21,14 @@ def load_from_txt(path: str)-> None:
 def load_in_txt(path: str, data: str)-> None:
     with open(path, 'w') as file:
         file.write(data)
+
+
+def load_bytes_in(path:str, data: bytes)-> None:
+    with open(path, 'wb') as file:
+        file.write(data)
+
+
+def load_bytes_from(path:str)-> bytes:
+    with open(path, 'rb') as file:
+        data = file.read()
+        return data
