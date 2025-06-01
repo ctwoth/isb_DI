@@ -5,16 +5,16 @@ from cryptography.hazmat.primitives import serialization
 import file_utils
 
 
-def generate_keys() -> (bytes, bytes):
+def generate_keys() -> (rsa.RSAPrivateKey, rsa.RSAPublicKey):
     key = rsa.generate_private_key(public_exponent=65537,
                                    key_size=2048)
 
     return key, key.public_key()
 
 
-def encrypt(text: bytes, public_key: rsa.RSAPublicKey) -> bytes:
+def encrypt(data: bytes, public_key: rsa.RSAPublicKey) -> bytes:
     return public_key.encrypt(
-        text,
+        data,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
