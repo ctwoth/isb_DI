@@ -12,18 +12,18 @@ def load_from_json(path: str) -> dict:
         return json_data
 
 
-def load_from_txt(path: str)-> str:
-    with open(path, 'r') as file:
+def load_from_txt(path: str, enc: str = 'utf-8')-> str:
+    with open(path, 'r', encoding=enc) as file:
         data = file.read()
         return data
 
 
-def load_in_txt(path: str, data: str)-> None:
-    with open(path, 'w') as file:
+def load_in_txt(data: str, path: str, enc: str = 'utf-8')-> None:
+    with open(path, 'w', encoding= enc) as file:
         file.write(data)
 
 
-def load_bytes_in(path:str, data: bytes)-> None:
+def load_bytes_in(data: bytes, path:str)-> None:
     with open(path, 'wb') as file:
         file.write(data)
 
