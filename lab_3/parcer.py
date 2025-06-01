@@ -9,11 +9,6 @@ def validate_args(args: argparse.Namespace) -> None:
         raise ValueError("Incorrect key_bits")
 
 def parse() -> argparse.Namespace:
-    """
-    создаём парсер с обязательными аргументами в виде пути к фото и для сохранения фото
-    также добавим необязательный аргумент в виде grayscale представления
-    программа кинет ошибку если не существует указанного файла, или папик для сохранения
-    """
     parser = argparse.ArgumentParser(description="program work settings")
 
     parser.add_argument("task",            type=str, help="Program task: generation / encryption / decryption")
