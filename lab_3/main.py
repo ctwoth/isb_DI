@@ -34,15 +34,15 @@ def main() -> None:
         match args.task:
             case 'generation':
                 CryptoSystem.generate_keys(args.key_bits, sets["symmetric_key"],
-                                          sets["public_key"], sets["private_key"])
+                                          sets["public_key"], sets["secret_key"])
 
             case 'encryption':
                 CryptoSystem.encryption(sets["initial_file"], sets["symmetric_key"],
-                                        sets["private_key"], sets["encrypted_file"])
+                                        sets["secret_key"], sets["encrypted_file"])
 
             case 'decryption':
-                CryptoSystem.decryption(sets["initial_file"], sets["symmetric_key"],
-                                        sets["private_key"], sets["decrypted_file"])
+                CryptoSystem.decryption(sets["encrypted_file"], sets["symmetric_key"],
+                                        sets["secret_key"], sets["decrypted_file"])
 
             case _:
                 raise ValueError("incorrect program task")
