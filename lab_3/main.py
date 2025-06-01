@@ -1,11 +1,16 @@
 import os
 
-import file_utils
-import parcer
-import CryptoSystem
+from file_utils import FileUtils
+from parser import Parser
+from cryptoSystem import CryptoSystem
 
 
 def check_sets(sets: dict) -> None:
+    """
+    check what sets got all necessary files
+    :param sets{dict}:
+    :return:
+    """
     if not os.path.isfile(sets["initial_file"]):
         raise ValueError("Wrong path to initial file")
 
@@ -27,8 +32,8 @@ def check_sets(sets: dict) -> None:
 
 def main() -> None:
     try:
-        args = parcer.parse()
-        sets = file_utils.load_from_json(args.settings)
+        args = Parser.parse()
+        sets = FileUtils.load_from_json(args.settings)
         check_sets(sets)
 
         match args.task:
