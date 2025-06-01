@@ -1,6 +1,7 @@
 import argparse
 import os
 
+
 class Parser:
     @staticmethod
     def validate_args(args: argparse.Namespace) -> None:
