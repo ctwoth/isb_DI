@@ -29,6 +29,7 @@ class CardManager:
 
             for result in results:
                 if result:
+                    p.terminate()
                     return result
 
         return None
