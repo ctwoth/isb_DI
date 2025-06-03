@@ -1,63 +1,141 @@
+import os
+import sys
+import time
 import multiprocessing as mp
-import hashlib
-import tqdm
+
+from PyQt6.QtWidgets import QApplication, QTextEdit, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget, QLineEdit
+
+from file_utils import FileUtils
+from parser import Parser
+from card_manager import CardManager
+from graphic import Graphic
 
 
-class CardManager:
-    @staticmethod
-    def alg_luhn(card_num: str) -> bool:
-        total = 0
+def check_sets(sets: dict) -> None:
+    """
+    check what sets got all necessary params and files
+    :param sets{dict}:
+    :return None:
+    """
+    if not os.path.isfile(sets["save_path"]):
+        raise ValueError("Wrong path to initial file")
 
-        for i, digit in enumerate(card_num):
-            num = int(digit)
-            if i % 2 == 0:
-                num *= 2
-                if num > 9:
-                    num -= (num // 10) + (num % 10)
+    if len(sets["last_numbers"]) != 4:
+        raise ValueError("not 4 numbers")
 
-            total += num
+    if len(sets["hash"]) < 10:
+        raise ValueError("Hash doesn't look correct...")
 
-        return total % 10 == 0
+    if len(sets["bins"])  == 0:
+        raise ValueError("Empty bank BINs")
 
-    @staticmethod
-    def hashing_card(num: str) -> str:
-        return hashlib.sha224(num.encode()).hexdigest()
 
-    @staticmethod
-    def find_card_from_hash(bins: list[str], last_nums: str, target_hash: str, free_cores: int = mp.cpu_count()) -> str:
-        num_range = 10**(16 - 6 - len(last_nums))
-        core_range = num_range // free_cores
+class MainWindow(QMainWindow):
+    def __init__(self, sets_path: str):
+        super().__init__()
+        self.sets = FileUtils.load_from_json(sets_path)
+        check_sets(self.sets)
 
-        with mp.Pool(processes=free_cores) as p:
-            results = []
+        self.setWindowTitle("Карточный дешифратор")
+        self.setFixedWidth(600)
 
-            for card_bin in bins:
-                for iteration in range(free_cores):
-                    start = core_range * iteration
-                    end = core_range * (iteration + 1) if iteration != free_cores - 1 else num_range
+        # Лейблы (просто надписи)
+        self.enc_params_label = QLabel("Данные дешифровки:")
+        self.card_num_label = QLabel("Номер карточки:")
+        self.result_label = QLabel("Результат:")
 
-                    results.append(p.apply_async(
-                        CardManager.hash_search,
-                        (card_bin, last_nums, start, end, target_hash)
-                        )
-                    )
+        # окна с текстом
+        self.enc_params = QTextEdit()
+        self.enc_params.setText(FileUtils.load_from_txt(sets_path))
+        self.enc_params.setReadOnly(True)
 
-            for i in range(len(results)):
-                r = results[i].get()
-                if r:
-                    p.terminate()
-                    return r
+        self.result = QTextEdit()
+        self.result.setReadOnly(True)
 
-        return None
+        self.card_num_edit = QLineEdit()
 
-    @staticmethod
-    def hash_search(card_bin: str, last_nums: str, start: int, end: int, target_hash: str) -> str:
-        for middle_nums in range(start, end):
-            card = f"{card_bin}{middle_nums}{last_nums}"
+        # кнопки
+        self.decode_button = QPushButton("найти номер карты")
+        self.decode_button.clicked.connect(self.decode)
+        self.stat_decode_button = QPushButton("статистика декодирования")
+        self.stat_decode_button.clicked.connect(self.stat_decode)
+        self.check_button = QPushButton("проверить карту на корректность")
+        self.check_button.clicked.connect(self.card_num_check)
 
-            rand_hash = CardManager.hashing_card(card)
+        # собираем все виджеты в окно приложения
+        layout = QVBoxLayout()
+        layout.addWidget(self.enc_params_label)
+        layout.addWidget(self.enc_params)
+        layout.addWidget(self.result_label)
+        layout.addWidget(self.result)
+        layout.addWidget(self.decode_button)
+        layout.addWidget(self.stat_decode_button)
+        layout.addWidget(self.card_num_label)
+        layout.addWidget(self.card_num_edit)
+        layout.addWidget(self.check_button)
 
-            if rand_hash == target_hash:
-                return card
+        container = QWidget()
+        container.setLayout(layout)
+        self.setCentralWidget(container)
 
-        return None
+
+    def decode(self) -> None:
+        number = CardManager.find_card_from_hash(self.sets['bins'], self.sets['last_numbers'], self.sets['hash'])
+
+        if number:
+            self.result.setText(number)
+            FileUtils.load_in_txt(number, self.sets['save_path'])
+        else:
+            self.result.setText("Не удалось найти карту")
+
+
+    def stat_decode(self)-> None:
+        statistic = [()]
+
+        for cores in range(1, 1.5*mp.cpu_count()):
+            start = time.time()
+            CardManager.find_card_from_hash(self.sets['bins'], self.sets['last_numbers'], self.sets['hash'], cores)
+            work_time = time.time() - start
+
+            statistic.append((cores, work_time))
+
+        Graphic.draw_plot(statistic)
+        Graphic.draw_bar(statistic)
+
+
+    def card_num_check(self)->None:
+        card_num = self.card_num_edit.text()
+        
+        if card_num.isdigit() or len(card_num) != 16:
+            self.result.setText("Некорректный номер карты")
+            return
+        
+        if CardManager.alg_luhn(card_num):
+            self.result.setText("Карта валидна")
+        else:
+            self.result.setText("Карта невалидна")
+
+
+def main() -> None:
+    try:
+        args = Parser.parse()
+
+        match args.task:
+            case 'tests':
+                a = 1
+            case 'gui':
+                app = QApplication(sys.argv)
+                window = MainWindow(args.settings)
+                window.show()
+                sys.exit(app.exec())
+
+
+            case _:
+                raise ValueError("incorrect program task")
+
+    except Exception as error:
+        print("Error!\n\t", error)
+
+
+if __name__ == '__main__':
+    main()
