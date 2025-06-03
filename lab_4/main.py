@@ -105,11 +105,11 @@ class MainWindow(QMainWindow):
 
     def card_num_check(self)->None:
         card_num = self.card_num_edit.text()
-        
-        if card_num.isdigit() or len(card_num) != 16:
+
+        if not card_num.isdigit() : #or len(card_num) != 16
             self.result.setText("Некорректный номер карты")
             return
-        
+
         if CardManager.alg_luhn(card_num):
             self.result.setText("Карта валидна")
         else:
