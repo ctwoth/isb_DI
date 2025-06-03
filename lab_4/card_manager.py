@@ -8,12 +8,12 @@ class CardManager:
     def alg_luhn(card_num: str) -> bool:
         total = 0
 
-        for i, digit in enumerate(card_num):
+        for i, digit in enumerate(reversed (card_num)):
             num = int(digit)
-            if i % 2 == 0:
+            if i % 2 == 1:
                 num *= 2
                 if num > 9:
-                    num -= (num // 10) + (num % 10)
+                    num = (num // 10) + (num % 10)
 
             total += num
 
