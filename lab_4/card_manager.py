@@ -1,8 +1,24 @@
 import multiprocessing as mp
 import hashlib
+import tqdm
 
 
 class CardManager:
+    @staticmethod
+    def alg_luhn(card_num: str) -> bool:
+        total = 0
+
+        for i, digit in enumerate(card_num):
+            num = int(digit)
+            if i % 2 == 0:
+                num *= 2
+                if num > 9:
+                    num -= (num // 10) + (num % 10)
+
+            total += num
+
+        return total % 10 == 0
+
     @staticmethod
     def hashing_card(num: str) -> str:
         return hashlib.sha224(num.encode()).hexdigest()
@@ -14,12 +30,11 @@ class CardManager:
 
         with mp.Pool(processes=free_cores) as p:
             results = []
-            start = 0
 
             for card_bin in bins:
                 for iteration in range(free_cores):
-                    start += core_range
-                    end = start + core_range if iteration != free_cores - 1 else num_range
+                    start = core_range * iteration
+                    end = core_range * (iteration + 1) if iteration != free_cores - 1 else num_range
 
                     results.append(p.apply_async(
                         CardManager.hash_search,
@@ -27,17 +42,18 @@ class CardManager:
                         )
                     )
 
-            for result in results:
-                if result:
+            for i in range(len(results)):
+                r = results[i].get()
+                if r:
                     p.terminate()
-                    return result
+                    return r
 
         return None
 
     @staticmethod
     def hash_search(card_bin: str, last_nums: str, start: int, end: int, target_hash: str) -> str:
         for middle_nums in range(start, end):
-            card = card_bin + f"{middle_nums}" + last_nums
+            card = f"{card_bin}{middle_nums}{last_nums}"
 
             rand_hash = CardManager.hashing_card(card)
 
