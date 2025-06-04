@@ -32,6 +32,11 @@ def check_sets(sets: dict) -> None:
 
 class MainWindow(QMainWindow):
     def __init__(self, sets_path: str):
+        """
+        app initialization.
+        
+        :param sets_path: 
+        """
         super().__init__()
         self.sets = FileUtils.load_from_json(sets_path)
         check_sets(self.sets)
@@ -80,6 +85,12 @@ class MainWindow(QMainWindow):
 
 
     def decode(self) -> None:
+        """
+        trying find card number using info from settings.json.
+        show result and if we find number -> save int into txt file.
+
+        :return None:
+        """
         number = CardManager.find_card_from_hash(self.sets['bins'], self.sets['last_numbers'], self.sets['hash'])
 
         if number:
@@ -90,6 +101,12 @@ class MainWindow(QMainWindow):
 
 
     def stat_decode(self)-> None:
+        """
+        starting decode procedure with different thread number.
+        measuring the time and drawing two types of graph.
+
+        :return None:
+        """
         statistic = []
 
         for cores in range(1, int(1.5*mp.cpu_count())):
@@ -104,6 +121,12 @@ class MainWindow(QMainWindow):
 
 
     def card_num_check(self)->None:
+        """
+        take string in field card_num_edit, check what it
+        actualy card number and testing it nuber with luhn test
+
+        :return None:
+        """
         card_num = self.card_num_edit.text()
 
         if not card_num.isdigit() : #or len(card_num) != 16
@@ -129,7 +152,8 @@ def main() -> None:
                 window = MainWindow(args.settings)
                 window.show()
                 sys.exit(app.exec())
-                
+
+
             case _:
                 raise ValueError("incorrect program task")
 
