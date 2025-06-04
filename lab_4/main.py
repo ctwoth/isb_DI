@@ -90,9 +90,9 @@ class MainWindow(QMainWindow):
 
 
     def stat_decode(self)-> None:
-        statistic = [()]
+        statistic = []
 
-        for cores in range(1, 1.5*mp.cpu_count()):
+        for cores in range(1, int(1.5*mp.cpu_count())):
             start = time.time()
             CardManager.find_card_from_hash(self.sets['bins'], self.sets['last_numbers'], self.sets['hash'], cores)
             work_time = time.time() - start
@@ -122,14 +122,14 @@ def main() -> None:
 
         match args.task:
             case 'tests':
-                a = 1
+                os.system('python unit_tests.py -v')
+
             case 'gui':
                 app = QApplication(sys.argv)
                 window = MainWindow(args.settings)
                 window.show()
                 sys.exit(app.exec())
-
-
+                
             case _:
                 raise ValueError("incorrect program task")
 
